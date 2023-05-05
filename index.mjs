@@ -1,22 +1,66 @@
 import express from "express";
-import http from "http";
-import fs from "fs";
+import http from 'http';
 import { Deta } from "deta";
-require('dotenv').config();
+require("dotenv").config();
+const moment = require('moment');
 
-const deta = Deta(process.env.PROJECT_ID);
-const db = deta.Base('UserData');
+const deta = Deta();
+const userData = deta.Base("UserData");
+const waitinglist = deta.Base("waitinglist");
+
+const port = process.env.PORT;
 
 const app = express();
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/v1/waitinglist'(req,res)=>{
-    res.status(200).json();
+app.get("/", (req, res) => {
+  res.send("GokyouShumyouAPI V3\n status:ok");
 });
-app.post('/v1/waitinglist'(req,res)=>{
+app.post("/v1/signup", (req, res) => {
+  userData.put(req.body);
+  res
+    .status(200)
+    .json({
+      status: 200,
+      message: "Registed! Username:" + req.body.name + "PW:" + req.body.PW
+    });
+  return;
 });
-
-const webServer = http.createServer(app);
-webServer.listen(3000,()=>{
-  console.log("server running PORT:"+3000);
+app.post("/v1/waitinglist", (req, res) => {
+  if (userData.fetch({"name":req.body.name,"PW":req.body.name}).count==0) {
+    res.status(402).json({ status: 402, message: "Please confirm AuthData." });
+    return;
+  } else {
+    waitinglist.put(req.body, {
+      {expireIn: 300}
+    });
+    res.status(200).json({status:200,message:'Add waitinglist!'});
+  }
+});
+app.deleate("/v1/waitinglist",(req,res)=>{
+  if (waitinglist.fetch({"name":req.body.name,"PW":req.body.PW}).count==0){
+    res.status(402).json({status:402,message:"Please confirm AuthData."});
+    return;
+  }else{
+    const {items:myFirstSet}=waitinglist.fetch({"name":req.body.name,"PW":req.body.PW});
+    const key=myFirstSet[0].key;
+    waitinglist.deleate(key);
+    res.status(200).json({status:200,message:"Deleate waitinglist!"});
+    return;
+  }
+});
+app.get("/v1/waitinglist",(req,res)=>{
+  if(waitinglist.fetch({"name":req.body.name,"PW":req.body.PW}).count==0){
+    res.status(402).json({status:402,message:"Please confirm AuthData."});
+    return;
+  }else{
+    const {items:toUD}=waitinglist.fetch({"kyuui":req.body.kyuui});
+    deleate toUD.PW;
+    res.status(200).json(toUD);
+    return;
+  }
+});
+app.listen(port, () => {
+  console.log(`GokyouShumyouAPI app listening on port ${port}`);
 });

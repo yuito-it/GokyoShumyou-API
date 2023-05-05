@@ -1,17 +1,21 @@
 {
-  "name": "p2p-signaling-server",
+  "name": "gokyoshumyou-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.mjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "typesync": "npm run typesync"
   },
   "author": "yuito_it_",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "deta": "^1.1.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "fs": "^0.0.1-security"
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security",
+    "moment": "^2.29.4",
+    "typesync": "^0.11.0"
   }
 }
