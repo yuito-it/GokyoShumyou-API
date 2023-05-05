@@ -33,7 +33,7 @@ app.post("/v1/waitinglist", (req, res) => {
     return;
   } else {
     waitinglist.put(req.body, {
-      {expireIn: 300}
+      expireIn: 300
     });
     res.status(200).json({status:200,message:'Add waitinglist!'});
   }
