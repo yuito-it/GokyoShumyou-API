@@ -38,15 +38,15 @@ app.post("/v1/waitinglist", (req, res) => {
     res.status(200).json({status:200,message:'Add waitinglist!'});
   }
 });
-app.deleate("/v1/waitinglist",(req,res)=>{
+app.delete("/v1/waitinglist",(req,res)=>{
   if (waitinglist.fetch({"name":req.body.name,"PW":req.body.PW}).count==0){
     res.status(402).json({status:402,message:"Please confirm AuthData."});
     return;
   }else{
     const {items:myFirstSet}=waitinglist.fetch({"name":req.body.name,"PW":req.body.PW});
     const key=myFirstSet[0].key;
-    waitinglist.deleate(key);
-    res.status(200).json({status:200,message:"Deleate waitinglist!"});
+    waitinglist.delete(key);
+    res.status(200).json({status:200,message:"Delete waitinglist!"});
     return;
   }
 });
@@ -56,7 +56,7 @@ app.get("/v1/waitinglist",(req,res)=>{
     return;
   }else{
     const {items:toUD}=waitinglist.fetch({"kyuui":req.body.kyuui});
-    deleate toUD.PW;
+    delete toUD.PW;
     res.status(200).json(toUD);
     return;
   }
