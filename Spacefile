@@ -6,3 +6,12 @@ micros:
     engine: nodejs16
     primary: true
     run: node index.js
+    public_routes:
+      - "/v1/signup"
+      - "/"
+      - "/v1/waitinglist"
+    presets:
+      env:
+        - name: PORT
+          description: PORT
+          default: 15864

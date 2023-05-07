@@ -1,14 +1,14 @@
 const express = require("express");
 const http =require("http");
 const { Deta } = require("deta");
-require("dotenv").config();
+//require("dotenv").config();
 const moment = require("moment");
 
 const deta = Deta();
 const userData = deta.Base("UserData");
 const waitinglist = deta.Base("waitinglist");
 
-const port = process.env.PORT;
+const port = process.env.PORT || 8888;
 
 const app = express();
 app.use(express.json());
@@ -23,6 +23,17 @@ app.post("/v1/signup", (req, res) => {
     status: 200,
     message: "Registed! Username:" + req.body.name + "PW:" + req.body.PW
   });
+  console.log("Regist:"+req.body);
+  return;
+});
+
+app.delete("/v1/signup", (req, res) => {
+  userData.delete(userData.fetch(req.body).items[0].key);
+  res.status(200).json({
+    status: 200,
+    message: "Deleted! Username:" + req.body.name + "PW:" + req.body.PW
+  });
+  console.log("Del:"+req.body);
   return;
 });
 app.post("/v1/waitinglist", (req, res) => {
