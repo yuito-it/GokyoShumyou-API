@@ -10,8 +10,3 @@ micros:
       - "/v1/signup"
       - "/"
       - "/v1/waitinglist"
-    presets:
-      env:
-        - name: PORT
-          description: PORT
-          default: 15864

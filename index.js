@@ -18,10 +18,10 @@ app.get("/", (req, res) => {
   res.send("GokyouShumyouAPI V3\n status:ok");
 });
 app.post("/v1/signup", (req, res) => {
-  userData.put(req.body);
+  //userData.put(req.params);
   res.status(200).json({
     status: 200,
-    message: "Registed! Username:" + req.body.name + "PW:" + req.body.PW
+    message: "Registed! Username:" + req.body.name + "PW:" + req.body.name
   });
   console.log("Regist:"+req.body);
   return;
@@ -31,7 +31,7 @@ app.delete("/v1/signup", (req, res) => {
   userData.delete(userData.fetch(req.body).items[0].key);
   res.status(200).json({
     status: 200,
-    message: "Deleted! Username:" + req.body.name + "PW:" + req.body.PW
+    message: "Deleted! Username:" + req.body.name + ",PW:" + req.body.PW
   });
   console.log("Del:"+req.body);
   return;
